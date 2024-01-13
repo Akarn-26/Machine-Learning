@@ -1,0 +1,18 @@
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from word2number import w2n
+import math
+data=pd.read_csv('hiring.csv')
+data['experience']=data.experience.fillna('zero')
+column=data['experience']
+column = column.apply(lambda x: w2n.word_to_num(x))
+data['experience']=column
+median=math.floor(data['test_score(out of 10)'].median())
+data['test_score(out of 10)']=data['test_score(out of 10)'].fillna(median)
+print(data.head())
+reg=LinearRegression()
+reg.fit(data[['experience','test_score(out of 10)', 'interview_score(out of 10)']],data['salary($)'])
+experience=int(input("Enter the experience of the candidate="))
+test_score=int(input("Enter the test score of the candidate="))
+interview_score=int(input("Enter the interview score of the candidate="))
+print(f"Your expected salary is $({(reg.predict([[experience,test_score,interview_score]]))})")
