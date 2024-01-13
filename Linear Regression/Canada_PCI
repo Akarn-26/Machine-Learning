@@ -1,0 +1,21 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+data=pd.read_csv('canada_per_capita_income.csv')
+x_axis=data['year']
+y_axis=data['per capita income (US$)']
+plt.plot(x_axis,y_axis,'+')
+plt.xlabel("YEAR")
+plt.ylabel("PER CAPITA INCOME")
+plt.title("PER CAPITA OF CANADA")
+plt.grid(False)
+reg=linear_model.LinearRegression()
+reg.fit(data[['year']],data['per capita income (US$)'])
+year=np.array([2020]).reshape(-1,1)
+#print(reg.predict(year))
+print(f"slope is {reg.coef_}")
+print(f"intercept is {reg.intercept_}")
+x=int(input("Enter the year you want to see the Per Capita Income of Canada="))
+y1=np.array([x]).reshape(-1,1)
+print(f"The PCI of Canada in the given year of {x} is predicted to be US$ {int(reg.predict(y1))}")
